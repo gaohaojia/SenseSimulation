@@ -205,7 +205,7 @@
         <!-- Add a namespace -->
         <namespace>/</namespace>
         <!-- Remap the default topic -->
-        <remapping>cmd_vel:=cmd_vel_sim</remapping>
+        <remapping>cmd_vel:=cmd_vel</remapping>
         <remapping>odom:=odom</remapping>
       </ros>
 
@@ -238,7 +238,7 @@
       <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
         <ros>
           <namespace>/</namespace>
-          <remapping>~/out:=/livox/imu</remapping>
+          <remapping>~/out:=livox/imu</remapping>
         </ros>
         <frame_name>imu_link</frame_name>
       </plugin>
@@ -247,7 +247,7 @@
 
   <!-- Livox-Mid360  -->
   <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
-  <xacro:mid360 name="livox_frame" parent="base_link" topic="/livox/lidar">
+  <xacro:mid360 name="livox_frame" parent="base_link" topic="livox/lidar">
     <origin xyz="0.0 0.0 0.15" rpy="0 0 0" />
   </xacro:mid360>
 

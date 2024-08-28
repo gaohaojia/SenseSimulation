@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(real_to_simulation)
+project(communication_client)
 
 ## Use C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -24,11 +24,11 @@ ament_auto_find_build_dependencies()
 ###########
 
 ament_auto_add_library(${PROJECT_NAME} SHARED
-  src/real_to_simulation.cpp
+  src/communication_client.cpp
 )
 
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN real_to_simulation::RealToSimulationNode
+  PLUGIN communication_client::CommunicationClientNode
   EXECUTABLE ${PROJECT_NAME}_node
 )
 

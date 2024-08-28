@@ -43,4 +43,5 @@ ament_auto_package(
   models
   urdf
   world
+  yaml
 )

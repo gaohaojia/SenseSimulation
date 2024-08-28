@@ -1,3 +1,9 @@
 [submodule "src/livox_ros_driver2"]
 	path = src/livox_ros_driver2
 	url = https://github.com/gaohaojia/Sensebeetle_Client-Livox_ROS_Driver2.git
+[submodule "src/ROS2-SH"]
+	path = src/ROS2-SH
+	url = https://github.com/gaohaojia/Sensebeetle_Simulation-ROS2_SH
+[submodule "src/integration_service"]
+	path = src/integration_service
+	url = https://github.com/gaohaojia/Sensebeetle_Simulation-Integration_Service
