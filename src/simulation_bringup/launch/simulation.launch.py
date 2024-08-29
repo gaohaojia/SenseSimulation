@@ -6,10 +6,9 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription, LaunchContext
 from launch.substitutions import LaunchConfiguration, Command
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction, OpaqueFunction, SetEnvironmentVariable, ExecuteProcess
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction, OpaqueFunction, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.conditions import LaunchConfigurationEquals
 
 def robot_description(context: LaunchContext, robot_count, use_sim_time):
     action_list = []
@@ -57,15 +56,9 @@ def robot_description(context: LaunchContext, robot_count, use_sim_time):
             ],
         )
 
-        integration_service = ExecuteProcess(
-            cmd=['integration-service', os.path.join(get_package_share_directory('simulation_bringup'), 'yaml', 'robot_{}.yaml'.format(i))],
-            output='screen'
-        )
-
         action_list.append(start_joint_state_publisher_cmd)
         action_list.append(start_robot_state_publisher_cmd)
         action_list.append(start_spawn_entity_node)
-        action_list.append(integration_service)
 
     return action_list
 
