@@ -54,6 +54,7 @@ target_link_libraries(ros2_livox
 
 ament_auto_package(
   INSTALL_TO_SHARE
+  meshes
   scan_mode
   urdf
 )
