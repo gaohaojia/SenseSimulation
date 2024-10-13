@@ -247,7 +247,7 @@
 
   <!-- Livox-Mid360  -->
   <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
-  <xacro:mid360 name="livox_frame" parent="base_link" topic="lidar_points">
+  <xacro:mid360 name="livox_frame" parent="base_link" topic="livox/lidar_points">
     <origin xyz="0.0 0.0 0.15" rpy="0 0 0" />
   </xacro:mid360>
 
