@@ -8,5 +8,5 @@ routes:
 
 topics:
     /robot_3/cmd_vel: { type: "geometry_msgs/Twist", route: client_to_server }
-    /robot_3/livox/lidar: { type: "livox_ros_driver2/CustomMsg", route: server_to_client }
-    /robot_3/livox/imu: { type: "sensor_msgs/Imu", route: server_to_client }
+    /robot_3/lidar_points: { type: "livox_ros_driver2/CustomMsg", route: server_to_client }
+    /robot_3/imu_data: { type: "sensor_msgs/Imu", route: server_to_client }

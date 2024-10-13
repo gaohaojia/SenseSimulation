@@ -21,11 +21,11 @@ CommunicationClientNode::CommunicationClientNode(
   this->get_parameter("robot_id", robot_id);
   livox_scan_sub_ =
     this->create_subscription<livox_ros_driver2::msg::CustomMsg>(
-      "/robot_" + std::to_string(robot_id) + "/livox/lidar", 5,
+      "/robot_" + std::to_string(robot_id) + "/lidar_points", 5,
       std::bind(&CommunicationClientNode::LivoxScanCallBack, this,
                 std::placeholders::_1));
   livox_imu_sub_ = this->create_subscription<sensor_msgs::msg::Imu>(
-    "/robot_" + std::to_string(robot_id) + "/livox/imu", 5,
+    "/robot_" + std::to_string(robot_id) + "/imu_data", 5,
     std::bind(&CommunicationClientNode::LivoxImuCallBack, this,
               std::placeholders::_1));
   cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
@@ -34,9 +34,9 @@ CommunicationClientNode::CommunicationClientNode(
               std::placeholders::_1));
 
   livox_scan_pub_ = this->create_publisher<livox_ros_driver2::msg::CustomMsg>(
-    "/livox/lidar", 5);
+    "/lidar_points", 5);
   livox_imu_pub_ =
-    this->create_publisher<sensor_msgs::msg::Imu>("/livox/imu", 5);
+    this->create_publisher<sensor_msgs::msg::Imu>("/imu_data", 5);
   cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
     "/robot_" + std::to_string(robot_id) + "/cmd_vel", 5);
 }

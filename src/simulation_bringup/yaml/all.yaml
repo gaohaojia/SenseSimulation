@@ -26,14 +26,14 @@ topics:
     /robot_3/cmd_vel: { type: "geometry_msgs/Twist", route: robot_3_to_server }
     /robot_4/cmd_vel: { type: "geometry_msgs/Twist", route: robot_4_to_server }
 
-    /robot_0/livox/lidar: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_0 }
-    /robot_1/livox/lidar: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_1 }
-    /robot_2/livox/lidar: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_2 }
-    /robot_3/livox/lidar: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_3 }
-    /robot_4/livox/lidar: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_4 }
+    /robot_0/lidar_points: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_0 }
+    /robot_1/lidar_points: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_1 }
+    /robot_2/lidar_points: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_2 }
+    /robot_3/lidar_points: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_3 }
+    /robot_4/lidar_points: { type: "livox_ros_driver2/CustomMsg", route: server_to_robot_4 }
 
-    /robot_0/livox/imu: { type: "sensor_msgs/Imu", route: server_to_robot_0 }
-    /robot_1/livox/imu: { type: "sensor_msgs/Imu", route: server_to_robot_1 }
-    /robot_2/livox/imu: { type: "sensor_msgs/Imu", route: server_to_robot_2 }
-    /robot_3/livox/imu: { type: "sensor_msgs/Imu", route: server_to_robot_3 }
-    /robot_4/livox/imu: { type: "sensor_msgs/Imu", route: server_to_robot_4 }
+    /robot_0/imu_data: { type: "sensor_msgs/Imu", route: server_to_robot_0 }
+    /robot_1/imu_data: { type: "sensor_msgs/Imu", route: server_to_robot_1 }
+    /robot_2/imu_data: { type: "sensor_msgs/Imu", route: server_to_robot_2 }
+    /robot_3/imu_data: { type: "sensor_msgs/Imu", route: server_to_robot_3 }
+    /robot_4/imu_data: { type: "sensor_msgs/Imu", route: server_to_robot_4 }
