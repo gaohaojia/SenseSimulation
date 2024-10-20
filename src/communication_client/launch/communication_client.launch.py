@@ -16,7 +16,7 @@ def integration_service_launch(context: LaunchContext, robot_id):
             os.path.join(
                 get_package_share_directory("simulation_bringup"),
                 "yaml",
-                "robot_{}.yaml".format(id),
+                "robot_{}_original.yaml".format(id),
             ),
         ],
         output="screen",
@@ -28,6 +28,9 @@ def generate_launch_description():
     robot_id = LaunchConfiguration("robot_id")
     network_port = LaunchConfiguration("network_port")
     network_ip = LaunchConfiguration("network_ip")
+    lidar_topic_name = LaunchConfiguration("lidar_topic_name")
+    imu_topic_name = LaunchConfiguration("imu_topic_name")
+    cmd_vel_topic_name = LaunchConfiguration("cmd_vel_topic_name")
 
     declare_robot_id = DeclareLaunchArgument(
         "robot_id", default_value="0", description=""
@@ -37,6 +40,15 @@ def generate_launch_description():
     )
     declare_network_ip = DeclareLaunchArgument(
         "network_ip", default_value="192.168.31.207", description=""
+    )
+    declare_lidar_topic_name = DeclareLaunchArgument(
+        "lidar_topic_name", default_value="livox/lidar_points", description=""
+    )
+    declare_imu_topic_name = DeclareLaunchArgument(
+        "imu_topic_name", default_value="imu_data", description=""
+    )
+    declare_cmd_vel_topic_name = DeclareLaunchArgument(
+        "cmd_vel_topic_name", default_value="cmd_vel", description=""
     )
 
     communication_client_node = Node(
@@ -48,6 +60,9 @@ def generate_launch_description():
         parameters=[
             {
                 "robot_id": robot_id,
+                "lidar_topic_name": lidar_topic_name,
+                "imu_topic_name": imu_topic_name,
+                "cmd_vel_topic_name": cmd_vel_topic_name,
                 "network_port": network_port,
                 "network_ip": network_ip,
             }
@@ -57,6 +72,9 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(declare_robot_id)
+    ld.add_action(declare_lidar_topic_name)
+    ld.add_action(declare_imu_topic_name)
+    ld.add_action(declare_cmd_vel_topic_name)
     ld.add_action(declare_network_port)
     ld.add_action(declare_network_ip)
 

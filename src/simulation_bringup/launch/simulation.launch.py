@@ -26,7 +26,7 @@ def robot_description(context: LaunchContext, robot_count, use_sim_time):
                 os.path.join(
                     get_package_share_directory("simulation_bringup"),
                     "urdf",
-                    "sensebeetle.xacro",
+                    "sensebeetle_original.xacro",
                 ),
             ]
         )
@@ -74,7 +74,7 @@ def robot_description(context: LaunchContext, robot_count, use_sim_time):
     return action_list
 
 
-def communication_client_launch(context: LaunchContext, robot_count):
+def communication_client_launch(context: LaunchContext, robot_count, lidar_topic_name, imu_topic_name, cmd_vel_topic_name):
     action_list = []
     for i in range(int(context.perform_substitution(robot_count))):
         communication_client_launch = IncludeLaunchDescription(
@@ -87,6 +87,9 @@ def communication_client_launch(context: LaunchContext, robot_count):
             ),
             launch_arguments={
                 "robot_id": str(i),
+                "lidar_topic_name": lidar_topic_name,
+                "imu_topic_name": imu_topic_name,
+                "cmd_vel_topic_name": cmd_vel_topic_name,
             }.items(),
         )
         action_list.append(SetEnvironmentVariable("ROS_DOMAIN_ID", str(i + 1)))
@@ -119,11 +122,23 @@ def world_launch(context: LaunchContext, world_name):
 
 def generate_launch_description():
     robot_count = LaunchConfiguration("robot_count")
+    lidar_topic_name = LaunchConfiguration("lidar_topic_name")
+    imu_topic_name = LaunchConfiguration("imu_topic_name")
+    cmd_vel_topic_name = LaunchConfiguration("cmd_vel_topic_name")
     use_sim_time = LaunchConfiguration("use_sim_time")
     world_name = LaunchConfiguration("world_name")
 
     declare_robot_count = DeclareLaunchArgument(
         "robot_count", default_value="3", description=""
+    )
+    declare_lidar_topic_name_cmd = DeclareLaunchArgument(
+        "lidar_topic_name", default_value="livox/lidar", description=""
+    )
+    declare_imu_topic_name_cmd = DeclareLaunchArgument(
+        "imu_topic_name", default_value="livox/imu", description=""
+    )
+    declare_cmd_vel_topic_name_cmd = DeclareLaunchArgument(
+        "cmd_vel_topic_name", default_value="cmd_vel", description=""
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -149,6 +164,9 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(declare_robot_count)
+    ld.add_action(declare_lidar_topic_name_cmd)
+    ld.add_action(declare_imu_topic_name_cmd)
+    ld.add_action(declare_cmd_vel_topic_name_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_world_cmd)
 
@@ -158,7 +176,7 @@ def generate_launch_description():
         OpaqueFunction(function=robot_description, args=[robot_count, use_sim_time])
     )
     ld.add_action(
-        OpaqueFunction(function=communication_client_launch, args=[robot_count])
+        OpaqueFunction(function=communication_client_launch, args=[robot_count, lidar_topic_name, imu_topic_name, cmd_vel_topic_name])
     )
 
     return ld
