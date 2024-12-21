@@ -18,7 +18,8 @@ CommunicationClientNode::CommunicationClientNode(
     : Node("communication_client", options) {
   std::string lidar_topic_name, imu_topic_name, cmd_vel_topic_name;
   this->declare_parameter<int>("robot_id", 0);
-  this->declare_parameter<std::string>("lidar_topic_name", "livox/lidar_points");
+  this->declare_parameter<std::string>("lidar_topic_name",
+                                       "livox/lidar_points");
   this->declare_parameter<std::string>("imu_topic_name", "imu_data");
   this->declare_parameter<std::string>("cmd_vel_topic_name", "cmd_vel");
 
@@ -27,6 +28,12 @@ CommunicationClientNode::CommunicationClientNode(
   this->get_parameter("imu_topic_name", imu_topic_name);
   this->get_parameter("cmd_vel_topic_name", cmd_vel_topic_name);
 
+  rclcpp::QoS clock_qos(rclcpp::KeepLast(5));
+  clock_qos.best_effort();
+  clock_sub_ = this->create_subscription<builtin_interfaces::msg::Time>(
+    "/changeable_clock", 5,
+    std::bind(&CommunicationClientNode::ClockCallBack, this,
+              std::placeholders::_1));
   livox_scan_sub_ =
     this->create_subscription<livox_ros_driver2::msg::CustomMsg>(
       "/robot_" + std::to_string(robot_id) + "/" + lidar_topic_name, 5,
@@ -41,7 +48,8 @@ CommunicationClientNode::CommunicationClientNode(
     "/robot_" + std::to_string(robot_id) + "/" + imu_topic_name, 5,
     std::bind(&CommunicationClientNode::LivoxImuCallBack, this,
               std::placeholders::_1));
-  // cmd_vel_stamped_sub_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
+  // cmd_vel_stamped_sub_ =
+  // this->create_subscription<geometry_msgs::msg::TwistStamped>(
   //   "/" + cmd_vel_topic_name, 5,
   //   std::bind(&CommunicationClientNode::CmdVelStampedCallBack, this,
   //             std::placeholders::_1));
@@ -50,15 +58,23 @@ CommunicationClientNode::CommunicationClientNode(
     std::bind(&CommunicationClientNode::CmdVelCallBack, this,
               std::placeholders::_1));
 
+  clock_pub_ = this->create_publisher<rosgraph_msgs::msg::Clock>("/clock", clock_qos);
   livox_scan_pub_ = this->create_publisher<livox_ros_driver2::msg::CustomMsg>(
     "/" + lidar_topic_name, 5);
   livox_point_cloud_pub_ =
-    this->create_publisher<sensor_msgs::msg::PointCloud2>("/livox/lidar/pointcloud",
-                                                          5);
+    this->create_publisher<sensor_msgs::msg::PointCloud2>(
+      "/livox/lidar/pointcloud", 5);
   livox_imu_pub_ =
     this->create_publisher<sensor_msgs::msg::Imu>("/" + imu_topic_name, 5);
   cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
     "/robot_" + std::to_string(robot_id) + "/" + cmd_vel_topic_name, 5);
+}
+
+void CommunicationClientNode::ClockCallBack(
+  const builtin_interfaces::msg::Time::ConstSharedPtr clock_msg) {
+  rosgraph_msgs::msg::Clock clock_msg_out;
+  clock_msg_out.clock = *clock_msg;
+  clock_pub_->publish(clock_msg_out);
 }
 
 void CommunicationClientNode::LivoxScanCallBack(

@@ -14,11 +14,14 @@
 #include <rclcpp/node.hpp>
 #include <rclcpp/node_options.hpp>
 #include <rclcpp/publisher.hpp>
+#include <rclcpp/publisher_base.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/subscription.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <vector>
+
+#include "rosgraph_msgs/msg/clock.hpp"
 
 namespace communication_client {
 class CommunicationClientNode : public rclcpp::Node {
@@ -28,6 +31,8 @@ class CommunicationClientNode : public rclcpp::Node {
  private:
   int robot_id;
 
+  void ClockCallBack(
+    const builtin_interfaces::msg::Time::ConstSharedPtr time_msg);
   void LivoxScanCallBack(
     const livox_ros_driver2::msg::CustomMsg::ConstSharedPtr livox_scan_msg);
   void LivoxPointCloudCallBack(
@@ -39,6 +44,7 @@ class CommunicationClientNode : public rclcpp::Node {
   void CmdVelCallBack(
     const geometry_msgs::msg::Twist::ConstSharedPtr cmd_vel_msg);
 
+  rclcpp::Subscription<builtin_interfaces::msg::Time>::SharedPtr clock_sub_;
   rclcpp::Subscription<livox_ros_driver2::msg::CustomMsg>::SharedPtr
     livox_scan_sub_;
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr
@@ -46,9 +52,9 @@ class CommunicationClientNode : public rclcpp::Node {
   rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr livox_imu_sub_;
   rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr
     cmd_vel_stamped_sub_;
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr
-    cmd_vel_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;
 
+  rclcpp::Publisher<rosgraph_msgs::msg::Clock>::SharedPtr clock_pub_;
   rclcpp::Publisher<livox_ros_driver2::msg::CustomMsg>::SharedPtr
     livox_scan_pub_;
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr
