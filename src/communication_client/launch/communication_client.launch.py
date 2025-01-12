@@ -29,6 +29,7 @@ def generate_launch_description():
     network_port = LaunchConfiguration("network_port")
     network_ip = LaunchConfiguration("network_ip")
     lidar_topic_name = LaunchConfiguration("lidar_topic_name")
+    lidar_pointcloud_topic_name = LaunchConfiguration("lidar_pointcloud_topic_name")
     imu_topic_name = LaunchConfiguration("imu_topic_name")
     cmd_vel_topic_name = LaunchConfiguration("cmd_vel_topic_name")
 
@@ -43,6 +44,11 @@ def generate_launch_description():
     )
     declare_lidar_topic_name = DeclareLaunchArgument(
         "lidar_topic_name", default_value="livox/lidar_points", description=""
+    )
+    declare_lidar_pointcloud_topic_name = DeclareLaunchArgument(
+        "lidar_pointcloud_topic_name",
+        default_value="livox/lidar/pointcloud",
+        description="",
     )
     declare_imu_topic_name = DeclareLaunchArgument(
         "imu_topic_name", default_value="imu_data", description=""
@@ -61,6 +67,7 @@ def generate_launch_description():
             {
                 "robot_id": robot_id,
                 "lidar_topic_name": lidar_topic_name,
+                "lidar_pointcloud_topic_name": lidar_pointcloud_topic_name,
                 "imu_topic_name": imu_topic_name,
                 "cmd_vel_topic_name": cmd_vel_topic_name,
                 "network_port": network_port,
@@ -73,6 +80,7 @@ def generate_launch_description():
 
     ld.add_action(declare_robot_id)
     ld.add_action(declare_lidar_topic_name)
+    ld.add_action(declare_lidar_pointcloud_topic_name)
     ld.add_action(declare_imu_topic_name)
     ld.add_action(declare_cmd_vel_topic_name)
     ld.add_action(declare_network_port)

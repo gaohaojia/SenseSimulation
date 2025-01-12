@@ -74,7 +74,7 @@ def robot_description(context: LaunchContext, robot_count, use_sim_time):
     return action_list
 
 
-def communication_client_launch(context: LaunchContext, robot_count, lidar_topic_name, imu_topic_name, cmd_vel_topic_name):
+def communication_client_launch(context: LaunchContext, robot_count, lidar_topic_name, lidar_pointcloud_topic_name, imu_topic_name, cmd_vel_topic_name):
     action_list = []
     for i in range(int(context.perform_substitution(robot_count))):
         communication_client_launch = IncludeLaunchDescription(
@@ -88,6 +88,7 @@ def communication_client_launch(context: LaunchContext, robot_count, lidar_topic
             launch_arguments={
                 "robot_id": str(i),
                 "lidar_topic_name": lidar_topic_name,
+                "lidar_pointcloud_topic_name": lidar_pointcloud_topic_name,
                 "imu_topic_name": imu_topic_name,
                 "cmd_vel_topic_name": cmd_vel_topic_name,
             }.items(),
@@ -123,6 +124,7 @@ def world_launch(context: LaunchContext, world_name):
 def generate_launch_description():
     robot_count = LaunchConfiguration("robot_count")
     lidar_topic_name = LaunchConfiguration("lidar_topic_name")
+    lidar_pointcloud_topic_name = LaunchConfiguration("lidar_pointcloud_topic_name")
     imu_topic_name = LaunchConfiguration("imu_topic_name")
     cmd_vel_topic_name = LaunchConfiguration("cmd_vel_topic_name")
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -133,6 +135,11 @@ def generate_launch_description():
     )
     declare_lidar_topic_name_cmd = DeclareLaunchArgument(
         "lidar_topic_name", default_value="livox/lidar", description=""
+    )
+    declare_lidar_pointcloud_topic_name = DeclareLaunchArgument(
+        "lidar_pointcloud_topic_name",
+        default_value="livox/lidar/pointcloud",
+        description="",
     )
     declare_imu_topic_name_cmd = DeclareLaunchArgument(
         "imu_topic_name", default_value="livox/imu", description=""
@@ -175,6 +182,7 @@ def generate_launch_description():
 
     ld.add_action(declare_robot_count)
     ld.add_action(declare_lidar_topic_name_cmd)
+    ld.add_action(declare_lidar_pointcloud_topic_name)
     ld.add_action(declare_imu_topic_name_cmd)
     ld.add_action(declare_cmd_vel_topic_name_cmd)
     ld.add_action(declare_use_sim_time_cmd)
@@ -187,7 +195,7 @@ def generate_launch_description():
         OpaqueFunction(function=robot_description, args=[robot_count, use_sim_time])
     )
     ld.add_action(
-        OpaqueFunction(function=communication_client_launch, args=[robot_count, lidar_topic_name, imu_topic_name, cmd_vel_topic_name])
+        OpaqueFunction(function=communication_client_launch, args=[robot_count, lidar_topic_name, lidar_pointcloud_topic_name, imu_topic_name, cmd_vel_topic_name])
     )
 
     return ld

@@ -16,15 +16,17 @@ namespace communication_client {
 CommunicationClientNode::CommunicationClientNode(
   const rclcpp::NodeOptions& options)
     : Node("communication_client", options) {
-  std::string lidar_topic_name, imu_topic_name, cmd_vel_topic_name;
+  std::string lidar_topic_name, lidar_pointcloud_topic_name, imu_topic_name, cmd_vel_topic_name;
   this->declare_parameter<int>("robot_id", 0);
   this->declare_parameter<std::string>("lidar_topic_name",
                                        "livox/lidar_points");
+  this->declare_parameter<std::string>("lidar_pointcloud_topic_name", "livox/lidar/pointcloud");
   this->declare_parameter<std::string>("imu_topic_name", "imu_data");
   this->declare_parameter<std::string>("cmd_vel_topic_name", "cmd_vel");
 
   this->get_parameter("robot_id", robot_id);
   this->get_parameter("lidar_topic_name", lidar_topic_name);
+  this->get_parameter("lidar_pointcloud_topic_name", lidar_pointcloud_topic_name);
   this->get_parameter("imu_topic_name", imu_topic_name);
   this->get_parameter("cmd_vel_topic_name", cmd_vel_topic_name);
 
@@ -41,7 +43,7 @@ CommunicationClientNode::CommunicationClientNode(
                 std::placeholders::_1));
   livox_point_cloud_sub_ =
     this->create_subscription<sensor_msgs::msg::PointCloud2>(
-      "/robot_" + std::to_string(robot_id) + "/livox/lidar/pointcloud", 5,
+      "/robot_" + std::to_string(robot_id) + "/" + lidar_pointcloud_topic_name, 5,
       std::bind(&CommunicationClientNode::LivoxPointCloudCallBack, this,
                 std::placeholders::_1));
   livox_imu_sub_ = this->create_subscription<sensor_msgs::msg::Imu>(
@@ -63,7 +65,7 @@ CommunicationClientNode::CommunicationClientNode(
     "/" + lidar_topic_name, 5);
   livox_point_cloud_pub_ =
     this->create_publisher<sensor_msgs::msg::PointCloud2>(
-      "/livox/lidar/pointcloud", 5);
+      "/" + lidar_pointcloud_topic_name, 5);
   livox_imu_pub_ =
     this->create_publisher<sensor_msgs::msg::Imu>("/" + imu_topic_name, 5);
   cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
