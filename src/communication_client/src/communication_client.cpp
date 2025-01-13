@@ -38,16 +38,16 @@ CommunicationClientNode::CommunicationClientNode(
               std::placeholders::_1));
   livox_scan_sub_ =
     this->create_subscription<livox_ros_driver2::msg::CustomMsg>(
-      "/robot_" + std::to_string(robot_id) + "/" + lidar_topic_name, 5,
+      "/robot_" + std::to_string(robot_id) + "/livox/lidar", 5,
       std::bind(&CommunicationClientNode::LivoxScanCallBack, this,
                 std::placeholders::_1));
   livox_point_cloud_sub_ =
     this->create_subscription<sensor_msgs::msg::PointCloud2>(
-      "/robot_" + std::to_string(robot_id) + "/" + lidar_pointcloud_topic_name, 5,
+      "/robot_" + std::to_string(robot_id) + "/livox/lidar/pointcloud", 5,
       std::bind(&CommunicationClientNode::LivoxPointCloudCallBack, this,
                 std::placeholders::_1));
   livox_imu_sub_ = this->create_subscription<sensor_msgs::msg::Imu>(
-    "/robot_" + std::to_string(robot_id) + "/" + imu_topic_name, 5,
+    "/robot_" + std::to_string(robot_id) + "/livox/imu", 5,
     std::bind(&CommunicationClientNode::LivoxImuCallBack, this,
               std::placeholders::_1));
   // cmd_vel_stamped_sub_ =
