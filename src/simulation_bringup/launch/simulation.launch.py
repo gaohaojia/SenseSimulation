@@ -134,15 +134,15 @@ def generate_launch_description():
         "robot_count", default_value="3", description=""
     )
     declare_lidar_topic_name_cmd = DeclareLaunchArgument(
-        "lidar_topic_name", default_value="livox/lidar_untransformed", description=""
+        "lidar_topic_name", default_value="livox/lidar", description=""
     )
     declare_lidar_pointcloud_topic_name = DeclareLaunchArgument(
         "lidar_pointcloud_topic_name",
-        default_value="livox/lidar/pointcloud_untransformed",
+        default_value="livox/lidar/pointcloud",
         description="",
     )
     declare_imu_topic_name_cmd = DeclareLaunchArgument(
-        "imu_topic_name", default_value="livox/imu_untransformed", description=""
+        "imu_topic_name", default_value="livox/imu", description=""
     )
     declare_cmd_vel_topic_name_cmd = DeclareLaunchArgument(
         "cmd_vel_topic_name", default_value="cmd_vel", description=""
@@ -189,7 +189,7 @@ def generate_launch_description():
     ld.add_action(declare_world_cmd)
 
     ld.add_action(gazebo_client_launch)
-    ld.add_action(communication_server_launch)
+    # ld.add_action(communication_server_launch)
     ld.add_action(OpaqueFunction(function=world_launch, args=[world_name]))
     ld.add_action(
         OpaqueFunction(function=robot_description, args=[robot_count, use_sim_time])
