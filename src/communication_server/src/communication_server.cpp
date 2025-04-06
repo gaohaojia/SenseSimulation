@@ -14,12 +14,12 @@ CommunicationServerNode::CommunicationServerNode(
   rclcpp::QoS clock_qos(rclcpp::KeepLast(5));
   clock_qos.best_effort();
   clock_sub_ = this->create_subscription<rosgraph_msgs::msg::Clock>(
-    "/clock", 5,
+    "/clock", clock_qos,
     std::bind(&CommunicationServerNode::ClockCallBack, this,
               std::placeholders::_1));
 
   clock_pub_ = this->create_publisher<builtin_interfaces::msg::Time>(
-    "/changeable_clock", clock_qos);
+    "/changeable_clock", 5);
 }
 
 void CommunicationServerNode::ClockCallBack(

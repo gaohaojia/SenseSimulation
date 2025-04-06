@@ -189,7 +189,7 @@ def generate_launch_description():
     ld.add_action(declare_world_cmd)
 
     ld.add_action(gazebo_client_launch)
-    # ld.add_action(communication_server_launch)
+    ld.add_action(communication_server_launch)
     ld.add_action(OpaqueFunction(function=world_launch, args=[world_name]))
     ld.add_action(
         OpaqueFunction(function=robot_description, args=[robot_count, use_sim_time])
