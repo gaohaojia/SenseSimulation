@@ -6,6 +6,8 @@
 
 本代码为 SenseLabRobo 仿真环境，用于在没有实车的环境下测试上层代码。本代码只适合部署在个人开发环境中，请勿将此代码部署在实车中。
 
+仿真使用 Gazebo 11 进行，由于其[已停止维护](https://community.gazebosim.org/t/gazebo-classic-11-has-reached-end-of-life/3424)，因此可能会遇到若干由 Gazebo 11 引起的错误。Gazebo Fortress 版本仍处于开发阶段，将在后续版本中支持。
+
 # 安装驱动
 
 ```bash
